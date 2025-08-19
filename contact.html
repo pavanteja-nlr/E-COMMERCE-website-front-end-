@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Vibhav Restro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <!-- Header (consistent across all pages) -->
+    <header>
+        <div class="logo">Vibhav Restro</div>
+        <nav>
+            <ul class="nav-list">
+                <li><a href="homepage.html">Home</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+                <li><a href="signin.html" class="sign-in-btn">Sign In</a></li>
+                <li class="cart-nav-item">
+                    <a href="#" class="cart-nav-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero/Banner Section (consistent style) -->
+    <section class="hero">
+        <h1>Contact Us</h1>
+        <p>We'd love to hear from you! Please fill out the form or use the info below to get in touch.</p>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <section class="contact-container">
+            <form class="contact-form" id="contactForm" autocomplete="off">
+                <label for="name">Name<span style="color:red">*</span></label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email<span style="color:red">*</span></label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" name="phone">
+
+                <label for="message">Message<span style="color:red">*</span></label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+
+                <button type="submit">Send Message</button>
+                <div id="formSuccess" class="form-success" style="display:none;">Thank you! We'll get back to you soon.</div>
+            </form>
+            <div class="contact-info">
+                <h2>Our Contact Info</h2>
+                <p><strong>Address:</strong> 123 Family Street, Food City, India</p>
+                <p><strong>Phone:</strong> <a href="tel:+911234567890">+91 12345 67890</a></p>
+                <p><strong>Email:</strong> <a href="mailto:info@vibhavrestro.com">info@vibhavrestro.com</a></p>
+                <p><strong>Opening Hours:</strong><br>
+                    Mon-Sun: 11:00 AM - 11:00 PM
+                </p>
+                <p>
+                    <a href="https://goo.gl/maps/xyz" target="_blank">View on Google Maps</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer (consistent across all pages) -->
+    <footer>
+        <p>&copy; 2024 Vibhav Restro. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="#">Facebook</a> | 
+            <a href="#">Instagram</a> | 
+            <a href="contact.html">Contact Us</a>
+        </div>
+    </footer>
+    <script>
+    // Simple form validation and success message
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        document.getElementById('formSuccess').style.display = 'block';
+        this.reset();
+        setTimeout(() => {
+            document.getElementById('formSuccess').style.display = 'none';
+        }, 4000);
+    });
+    </script>
+</body>
+</html> 

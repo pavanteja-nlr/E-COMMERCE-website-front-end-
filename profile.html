@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Vibhav Restro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Profile page specific styles */
+        .profile-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 24px;
+            border: 3px solid #f76b1c;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-info h1 {
+            margin-bottom: 8px;
+            color: #222;
+        }
+
+        .profile-info p {
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .profile-info .member-since {
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .profile-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .profile-tabs {
+            display: flex;
+            background: #f8f8f8;
+            border-bottom: 1px solid #eee;
+        }
+
+        .profile-tab {
+            padding: 15px 20px;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .profile-tab:hover {
+            color: #f76b1c;
+        }
+
+        .profile-tab.active {
+            color: #f76b1c;
+        }
+
+        .profile-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #f76b1c;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Order history styles */
+        .order-card {
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: #f8f8f8;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-id {
+            font-weight: 600;
+            color: #222;
+        }
+
+        .order-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .order-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .order-status.delivered {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .order-status.processing {
+            background: #fff8e1;
+            color: #ff8f00;
+        }
+
+        .order-content {
+            padding: 15px 20px;
+        }
+
+        .order-items {
+            margin-bottom: 15px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-item-name {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .order-item-qty {
+            margin: 0 20px;
+            color: #666;
+        }
+
+        .order-item-price {
+            font-weight: 500;
+            color: #f76b1c;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+            font-weight: 600;
+        }
+
+        .order-footer {
+            display: flex;
+            justify-content: flex-end;
+            padding: 15px 20px;
+            background: #f8f8f8;
+            border-top: 1px solid #eee;
+        }
+
+        .order-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            margin-left: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .track-btn {
+            background: #f76b1c;
+            color: white;
+        }
+
+        .track-btn:hover {
+            background: #e55a0b;
+        }
+
+        .reorder-btn {
+            background: #fff;
+            color: #f76b1c;
+            border: 1px solid #f76b1c;
+        }
+
+        .reorder-btn:hover {
+            background: #fff8f0;
+        }
+
+        /* Form styles */
+        .profile-form {
+            max-width: 600px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #f76b1c;
+            outline: none;
+        }
+
+        .form-actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .save-btn {
+            padding: 10px 24px;
+            background: #f76b1c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .save-btn:hover {
+            background: #e55a0b;
+        }
+
+        .reset-btn {
+            padding: 10px 24px;
+            background: #fff;
+            color: #666;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-right: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .reset-btn:hover {
+            background: #f8f8f8;
+        }
+
+        /* Preferences styles */
+        .preference-group {
+            margin-bottom: 30px;
+        }
+
+        .preference-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .preference-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .preference-option {
+            display: flex;
+            align-items: center;
+            padding: 8px 15px;
+            background: #f8f8f8;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .preference-option:hover {
+            background: #fff0e6;
+        }
+
+        .preference-option.selected {
+            background: #f76b1c;
+            color: white;
+        }
+
+        .preference-option input {
+            margin-right: 8px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-right: 10px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #f76b1c;
+        }
+
+        input:focus + .toggle-slider {
+            box-shadow: 0 0 1px #f76b1c;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .toggle-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .toggle-label {
+            flex: 1;
+        }
+
+        /* Account settings styles */
+        .settings-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .settings-section:last-child {
+            border-bottom: none;
+        }
+
+        .settings-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .settings-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .settings-label {
+            flex: 1;
+        }
+
+        .settings-value {
+            color: #666;
+            margin-right: 15px;
+        }
+
+        .change-btn {
+            padding: 6px 12px;
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .change-btn:hover {
+            background: #f1f1f1;
+        }
+
+        .delete-account-btn {
+            padding: 10px 16px;
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .delete-account-btn:hover {
+            background: #ffcdd2;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-avatar {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+
+            .profile-tabs {
+                overflow-x: auto;
+            }
+
+            .profile-tab {
+                padding: 15px 15px;
+                white-space: nowrap;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .order-date {
+                margin: 5px 0;
+            }
+
+            .order-item {
+                flex-direction: column;
+                padding: 10px 0;
+            }
+
+            .order-item-qty,
+            .order-item-price {
+                margin: 5px 0;
+            }
+
+            .order-footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .order-btn {
+                width: 100%;
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header (same as other pages) -->
+    <header>
+        <div class="logo">Vibhav Restro</div>
+        <nav>
+            <ul class="nav-list">
+                <li><a href="homepage2.html">Home</a></li>
+                <li><a href="menu2.html">Menu</a></li>
+                <li><a href="about2.html">About</a></li>
+                <li><a href="contact2.html">Contact</a></li>
+                <li><a href="profile.html" class="sign-in-btn">My Profile</a></li>
+                <li class="cart-nav-item">
+                    <a href="#" class="cart-nav-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">2</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="profile-container">
+        <!-- Profile Header with Avatar -->
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?auto=format&fit=crop&w=250&q=80" alt="Profile Avatar">
+            </div>
+            <div class="profile-info">
+                <h1>John Doe</h1>
+                <p>john.doe@example.com</p>
+                <p>+1 (555) 123-4567</p>
+                <p class="member-since">Member since: Jan 15, 2024</p>
+            </div>
+        </div>
+
+        <!-- Profile Content with Tabs -->
+        <div class="profile-content">
+            <div class="profile-tabs">
+                <div class="profile-tab active" data-tab="orders">Order History</div>
+                <div class="profile-tab" data-tab="personal">Personal Information</div>
+                <div class="profile-tab" data-tab="preferences">Preferences</div>
+                <div class="profile-tab" data-tab="settings">Account Settings</div>
+            </div>
+
+            <!-- Order History Tab -->
+            <div class="tab-content active" id="orders">
+                <h2>Recent Orders</h2>
+                <p>View your order history and check the status of recent orders.</p>
+                
+                <div class="order-card">
+                    <div class="order-header">
+                        <div class="order-id">#ORD-2458</div>
+                        <div class="order-date">June 28, 2024 - 7:45 PM</div>
+                        <div class="order-status delivered">Delivered</div>
+                    </div>
+                    <div class="order-content">
+                        <div class="order-items">
+                            <div class="order-item">
+                                <div class="order-item-name">Butter Chicken</div>
+                                <div class="order-item-qty">x1</div>
+                                <div class="order-item-price">₹1,275</div>
+                            </div>
+                            <div class="order-item">
+                                <div class="order-item-name">Garlic Naan</div>
+                                <div class="order-item-qty">x2</div>
+                                <div class="order-item-price">₹450</div>
+                            </div>
+                            <div class="order-item">
+                                <div class="order-item-name">Mango Lassi</div>
+                                <div class="order-item-qty">x1</div>
+                                <div class="order-item-price">₹340</div>
+                            </div>
+                        </div>
+                        <div class="order-total">
+                            <div>Total</div>
+                            <div>₹2,065</div>
+                        </div>
+                    </div>
+                    <div class="order-footer">
+                        <button class="order-btn reorder-btn">Reorder</button>
+                    </div>
+                </div>
+
+                <div class="order-card">
+                    <div class="order-header">
+                        <div class="order-id">#ORD-2436</div>
+                        <div class="order-date">June 21, 2024 - 1:15 PM</div>
+                        <div class="order-status processing">Processing</div>
+                    </div>
+                    <div class="order-content">
+                        <div class="order-items">
+                            <div class="order-item">
+                                <div class="order-item-name">Vegetable Biryani</div>
+                                <div class="order-item-qty">x1</div>
+                                <div class="order-item-price">₹1,125</div>
+                            </div>
+                            <div class="order-item">
+                                <div class="order-item-name">Paneer Tikka</div>
+                                <div class="order-item-qty">x1</div>
+                                <div class="order-item-price">₹940</div>
+                            </div>
+                            <div class="order-item">
+                                <div class="order-item-name">Sweet Lassi</div>
+                                <div class="order-item-qty">x2</div>
+                                <div class="order-item-price">₹600</div>
+                            </div>
+                        </div>
+                        <div class="order-total">
+                            <div>Total</div>
+                            <div>₹2,665</div>
+                        </div>
+                    </div>
+                    <div class="order-footer">
+                        <button class="order-btn track-btn">Track Order</button>
+                        <button class="order-btn reorder-btn">Reorder</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personal Information Tab -->
+            <div class="tab-content" id="personal">
+                <h2>Personal Information</h2>
+                <p>Manage your personal details and address information.</p>
+                
+                <form class="profile-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" value="John">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" value="Doe">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" value="john.doe@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" value="+1 (555) 123-4567">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="birthdate">Date of Birth</label>
+                            <input type="date" id="birthdate" value="1990-05-15">
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender">
+                                <option value="male" selected>Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                                <option value="prefer-not">Prefer not to say</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 20px 0;">Address Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="address">Street Address</label>
+                        <input type="text" id="address" value="123 Main Street, Apt 4B">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" value="New York">
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State/Province</label>
+                            <input type="text" id="state" value="NY">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="zip">Zip/Postal Code</label>
+                            <input type="text" id="zip" value="10001">
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <select id="country">
+                                <option value="us" selected>United States</option>
+                                <option value="ca">Canada</option>
+                                <option value="uk">United Kingdom</option>
+                                <option value="au">Australia</option>
+                                <option value="in">India</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="reset-btn">Reset</button>
+                        <button type="submit" class="save-btn">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Preferences Tab -->
+            <div class="tab-content" id="preferences">
+                <h2>Preferences</h2>
+                <p>Customize your preferences for a personalized experience.</p>
+                
+                <div class="preference-group">
+                    <h3 class="preference-title">Dietary Preferences</h3>
+                    <div class="preference-options">
+                        <div class="preference-option selected">
+                            <input type="checkbox" id="veg" checked>
+                            <label for="veg">Vegetarian</label>
+                        </div>
+                        <div class="preference-option">
+                            <input type="checkbox" id="non-veg">
+                            <label for="non-veg">Non-Vegetarian</label>
+                        </div>
+                        <div class="preference-option">
+                            <input type="checkbox" id="vegan">
+                            <label for="vegan">Vegan</label>
+                        </div>
+                        <div class="preference-option">
+                            <input type="checkbox" id="gluten-free">
+                            <label for="gluten-free">Gluten-Free</label>
+                        </div>
+                        <div class="preference-option">
+                            <input type="checkbox" id="dairy-free">
+                            <label for="dairy-free">Dairy-Free</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="preference-group">
+                    <h3 class="preference-title">Spice Level</h3>
+                    <div class="preference-options">
+                        <div class="preference-option">
+                            <input type="radio" name="spice" id="mild">
+                            <label for="mild">Mild</label>
+                        </div>
+                        <div class="preference-option selected">
+                            <input type="radio" name="spice" id="medium" checked>
+                            <label for="medium">Medium</label>
+                        </div>
+                        <div class="preference-option">
+                            <input type="radio" name="spice" id="spicy">
+                            <label for="spicy">Spicy</label>
+                        </div>
+                        <div class="preference-option">
+                            <input type="radio" name="spice" id="extra-spicy">
+                            <label for="extra-spicy">Extra Spicy</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="preference-group">
+                    <h3 class="preference-title">Favorite Cuisines</h3>
+                    <div class="preference-options">
+                        <div class="preference-option selected">
+                            <input type="checkbox" id="indian" checked>
+                            <label for="indian">Indian</label>
+                        </div>
+                        <div class="preference-option selected">
+                            <input type="checkbox" id="chinese" checked>
+                            <label for="chinese">Chinese</label>
+                        </div>
+                        <div class="preference-option">
+                            <input type="checkbox" id="italian">
+                            <label for="italian">Italian</label>
+                        </div>
+                        <div class="preference-option">
+                            <input type="checkbox" id="mexican">
+                            <label for="mexican">Mexican</label>
+                        </div>
+                        <div class="preference-option">
+                            <input type="checkbox" id="thai">
+                            <label for="thai">Thai</label>
+                        </div>
+                        <div class="preference-option">
+                            <input type="checkbox" id="mediterranean">
+                            <label for="mediterranean">Mediterranean</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="preference-group">
+                    <h3 class="preference-title">Notification Preferences</h3>
+                    <div class="toggle-option">
+                        <div class="toggle-label">Email notifications for promotions</div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-option">
+                        <div class="toggle-label">SMS notifications for order updates</div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-option">
+                        <div class="toggle-label">Newsletter subscription</div>
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-option">
+                        <div class="toggle-label">Special event invitations</div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="save-btn">Save Preferences</button>
+                </div>
+            </div>
+
+            <!-- Account Settings Tab -->
+            <div class="tab-content" id="settings">
+                <h2>Account Settings</h2>
+                <p>Manage your account security and privacy settings.</p>
+                
+                <div class="settings-section">
+                    <h3 class="settings-title">Security Settings</h3>
+                    <div class="settings-item">
+                        <div class="settings-label">Password</div>
+                        <div class="settings-value">********</div>
+                        <button class="change-btn">Change</button>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label">Two-Factor Authentication</div>
+                        <div class="settings-value">Disabled</div>
+                        <button class="change-btn">Enable</button>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-title">Payment Methods</h3>
+                    <div class="settings-item">
+                        <div class="settings-label">Credit Card</div>
+                        <div class="settings-value">Visa ending in 4567</div>
+                        <button class="change-btn">Edit</button>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label">PayPal</div>
+                        <div class="settings-value">john.doe@example.com</div>
+                        <button class="change-btn">Edit</button>
+                    </div>
+                    <button class="change-btn" style="margin-top: 10px;">Add Payment Method</button>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-title">Privacy Settings</h3>
+                    <div class="toggle-option">
+                        <div class="toggle-label">Share my order history for personalized recommendations</div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-option">
+                        <div class="toggle-label">Allow Vibhav Restro to use my data for marketing</div>
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-title">Account Actions</h3>
+                    <p>These actions are permanent and cannot be undone.</p>
+                    <div style="display: flex; gap: 15px; margin-top: 15px;">
+                        <button class="submit-btn" id="logout-btn" style="background-color: #f8f8f8; color: #666; border: 1px solid #ddd; width: auto;">Log Out</button>
+                        <button class="delete-account-btn">Delete Account</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer (same as other pages) -->
+    <footer>
+        <p>&copy; 2024 Vibhav Restro. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="#">Facebook</a> | 
+            <a href="#">Instagram</a> | 
+            <a href="contact2.html">Contact Us</a>
+        </div>
+    </footer>
+
+    <script>
+        // Tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.profile-tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    tab.classList.add('active');
+                    
+                    // Show corresponding content
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Preference option selection
+            const preferenceOptions = document.querySelectorAll('.preference-option');
+            preferenceOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const input = this.querySelector('input');
+                    
+                    if (input.type === 'checkbox') {
+                        this.classList.toggle('selected');
+                        input.checked = !input.checked;
+                    } else if (input.type === 'radio') {
+                        // Find all radio options in the same group
+                        const name = input.getAttribute('name');
+                        const radioOptions = document.querySelectorAll(`input[name="${name}"]`);
+                        
+                        // Remove selected class from all options in the group
+                        radioOptions.forEach(radio => {
+                            radio.closest('.preference-option').classList.remove('selected');
+                            radio.checked = false;
+                        });
+                        
+                        // Select this option
+                        this.classList.add('selected');
+                        input.checked = true;
+                    }
+                });
+            });
+            
+            // Logout functionality
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to log out?')) {
+                    // In a real app, you would clear session/cookies here
+                    window.location.href = 'signin.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibhav Restro - Family Restaurant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=2000&q=80') center/cover fixed no-repeat;
+            position: relative;
+            z-index: 1;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(245,247,250,0.92) 100%);
+            z-index: -1;
+        }
+        
+        /* Dynamic Menu Styles */
+        .dynamic-menu-section {
+            margin: 3rem auto;
+            max-width: 1100px;
+            padding: 0 1rem;
+        }
+        
+        .menu-time-indicator {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .menu-time-indicator .current-menu {
+            display: inline-block;
+            padding: 0.6rem 1.5rem;
+            background-color: #f76b1c;
+            color: white;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .menu-toggle-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .menu-toggle {
+            display: flex;
+            background: #f1f1f1;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+            padding: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        
+        .menu-toggle-btn {
+            padding: 0.5rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+            transition: color 0.3s;
+            font-weight: 600;
+        }
+        
+        .menu-toggle-btn.active {
+            color: white;
+        }
+        
+        .toggle-background {
+            position: absolute;
+            height: calc(100% - 8px);
+            top: 4px;
+            width: 50%;
+            border-radius: 24px;
+            background-color: #f76b1c;
+            transition: transform 0.4s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+        
+        .menu-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            justify-content: center;
+        }
+        
+        .menu-category {
+            padding: 0.5rem 1.2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .menu-category:hover, .menu-category.active {
+            background: #f76b1c;
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+        
+        .menu-grid.fade {
+            opacity: 0;
+        }
+        
+        .menu-item-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+        
+        .menu-item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .menu-item-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .menu-item-content {
+            padding: 1rem;
+        }
+        
+        .menu-item-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .menu-item-tag {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            background: #f1f1f1;
+        }
+        
+        .menu-item-tag.veg {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .menu-item-tag.non-veg {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        .menu-item-tag.spicy {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+        
+        .menu-item-tag.bestseller {
+            background: #ede7f6;
+            color: #5e35b1;
+        }
+        
+        .menu-item-tag.new {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .menu-item-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        .menu-item-desc {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.8rem;
+        }
+        
+        .menu-item-price {
+            font-weight: bold;
+            color: #f76b1c;
+        }
+        
+        .menu-item-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        
+        .add-to-cart-btn {
+            background: #f76b1c;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .add-to-cart-btn:hover {
+            background: #e45a0e;
+            transform: scale(1.05);
+        }
+        
+        .favorite-btn {
+            background: none;
+            border: none;
+            color: #777;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: color 0.2s, transform 0.2s;
+        }
+        
+        .favorite-btn:hover, .favorite-btn.active {
+            color: #ff5252;
+            transform: scale(1.1);
+        }
+        
+        .menu-item-special {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #f76b1c;
+            color: white;
+            font-size: 0.8rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .menu-time-preference {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .time-preference-btn {
+            background: none;
+            border: 1px solid #ddd;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .time-preference-btn.active {
+            background: #333;
+            color: white;
+            border-color: #333;
+        }
+        
+        .menu-time-preference button:hover:not(.active) {
+            background: #f1f1f1;
+        }
+        
+        /* Responsive styling */
+        @media (max-width: 768px) {
+            .menu-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .menu-categories {
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+            }
+            
+            .menu-category {
+                white-space: nowrap;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">Vibhav Restro</div>
+        <!-- Navigation Bar -->
+        <nav>
+            <ul class="nav-list">
+                <li><a href="homepage.html">Home</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="signin.html" class="sign-in-btn">Sign In</a></li>
+                <li class="cart-nav-item">
+                    <a href="#" class="cart-nav-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Sign In Modal -->
+    <div class="sign-in-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="signin">Sign In</button>
+                <button class="tab-btn" data-tab="signup">Sign Up</button>
+            </div>
+            
+            <!-- Sign In Form -->
+            <form id="signinForm" class="auth-form active">
+                <div class="form-group">
+                    <label for="signin-email">Email</label>
+                    <input type="email" id="signin-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signin-password">Password</label>
+                    <input type="password" id="signin-password" required>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="remember-me">
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+                <button type="submit" class="submit-btn">Sign In</button>
+            </form>
+
+            <!-- Sign Up Form -->
+            <form id="signupForm" class="auth-form">
+                <div class="form-group">
+                    <label for="signup-name">Full Name</label>
+                    <input type="text" id="signup-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-phone">Phone Number</label>
+                    <input type="tel" id="signup-phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-confirm-password">Confirm Password</label>
+                    <input type="password" id="signup-confirm-password" required>
+                </div>
+                <button type="submit" class="submit-btn">Sign Up</button>
+            </form>
+        </div>
+    </div>
+    <div class="modal-overlay"></div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar">
+        <div class="cart-header">
+            <h2>Your Order</h2>
+            <button class="close-cart">&times;</button>
+        </div>
+        <div class="cart-items">
+            <!-- Cart items will be added here dynamically -->
+        </div>
+        <div class="cart-summary">
+            <div class="subtotal">
+                <span>Subtotal</span>
+                <span class="subtotal-amount">₹0.00</span>
+            </div>
+            <div class="tax">
+                <span>Tax (5%)</span>
+                <span class="tax-amount">₹0.00</span>
+            </div>
+            <div class="total">
+                <span>Total</span>
+                <span class="total-amount">₹0.00</span>
+            </div>
+            <button class="checkout-btn">Proceed to Checkout</button>
+        </div>
+    </div>
+    <div class="cart-overlay"></div>
+
+    <!-- Main Content -->
+    <main>
+        <section class="hero">
+            <h1>Welcome to Vibhav Restro</h1>
+            <p>Your family's favorite place to dine and celebrate!</p>
+            <a href="menu.html" class="cta-btn pulse"><i class="fas fa-utensils"></i> View Menu</a>
+        </section>
+
+        <!-- Quick Order Section -->
+        <section class="quick-order-section">
+            <h2>Order Online</h2>
+            <div class="order-options">
+                <div class="order-option">
+                    <i class="fas fa-utensils"></i>
+                    <h3>Dine In</h3>
+                    <p>Reserve a table for your family</p>
+                    <a href="signin.html" class="order-btn">Book Table</a>
+                </div>
+                <div class="order-option">
+                    <i class="fas fa-motorcycle"></i>
+                    <h3>Delivery</h3>
+                    <p>Get food delivered to your doorstep</p>
+                    <a href="signin.html" class="order-btn">Order Now</a>
+                </div>
+                <div class="order-option">
+                    <i class="fas fa-shopping-bag"></i>
+                    <h3>Takeaway</h3>
+                    <p>Pick up your order</p>
+                    <a href="signin.html" class="order-btn">Order Now</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Special Offers Section -->
+        <section class="offers-section">
+            <h2>Special Offers</h2>
+            <div class="offers-grid">
+                <div class="offer-card">
+                    <div class="offer-badge">20% OFF</div>
+                    <h3>Weekend Special</h3>
+                    <p>Every Saturday & Sunday</p>
+                    <a href="signin.html" class="offer-btn">Learn More</a>
+                </div>
+                <div class="offer-card">
+                    <div class="offer-badge">Free Dessert</div>
+                    <h3>Family Package</h3>
+                    <p>For orders above ₹1000</p>
+                    <a href="signin.html" class="offer-btn">Learn More</a>
+                </div>
+                <div class="offer-card">
+                    <div class="offer-badge">30% OFF</div>
+                    <h3>Lunch Special</h3>
+                    <p>Monday to Friday, 12-3 PM</p>
+                    <a href="signin.html" class="offer-btn">Learn More</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Today's Specials Section -->
+        <section class="specials-section">
+            <h2>Today's Specials</h2>
+            <div class="specials-list">
+                <div class="special-item">
+                    <h3>Buy 1 Get 1 Free on Biryani</h3>
+                    <p>Order any biryani and get another absolutely free! <br> <strong>Only today!</strong></p>
+                </div>
+                <div class="special-item">
+                    <h3>Seafood Festival</h3>
+                    <p>Enjoy 20% off on all seafood items. Fresh catch, delicious taste!</p>
+                </div>
+                <div class="special-item">
+                    <h3>Family Combo</h3>
+                    <p>Special family combo meals starting at just ₹499. Perfect for groups!</p>
+                </div>
+                <div class="special-item">
+                    <h3>Free Dessert</h3>
+                    <p>Get a complimentary dessert with every main course order.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials-section">
+            <h2>What Our Customers Say</h2>
+            <div class="testimonials-list">
+                <div class="testimonial">
+                    <div class="testimonial-header">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Priya S." class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h3>Priya S.</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"The biryani here is absolutely amazing! The flavors are perfectly balanced, and the meat is always tender. We've been coming here every weekend for the past year, and it never disappoints. The service is excellent, and the ambiance is perfect for family dinners."</p>
+                    <span class="testimonial-date">2 days ago</span>
+                </div>
+
+                <div class="testimonial">
+                    <div class="testimonial-header">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Rahul K." class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h3>Rahul K.</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"I'm a seafood lover, and their seafood festival was incredible! The fish was fresh, perfectly cooked, and the spices were just right. The staff was very knowledgeable about the menu and made great recommendations. Will definitely be back for more!"</p>
+                    <span class="testimonial-date">1 week ago</span>
+                </div>
+
+                <div class="testimonial">
+                    <div class="testimonial-header">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Meena R." class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h3>Meena R.</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"We celebrated my daughter's birthday here, and it was perfect! The staff went above and beyond to make it special. The kids loved the desserts, and the family combo was great value for money. The restaurant is clean, well-maintained, and has a lovely atmosphere."</p>
+                    <span class="testimonial-date">2 weeks ago</span>
+                </div>
+
+                <div class="testimonial">
+                    <div class="testimonial-header">
+                        <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Vikram M." class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h3>Vikram M.</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"The lunch special is a great deal! The food is consistently delicious, and the portions are generous. I especially love their butter chicken and naan. The service is quick, and the staff is always friendly. Highly recommended for office lunches!"</p>
+                    <span class="testimonial-date">3 weeks ago</span>
+                </div>
+
+                <!-- Example reviews inspired by Zomato/Swiggy -->
+                <div class="testimonial">
+                    <div class="testimonial-header">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Amit T." class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h3>Amit T.</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"Ordered via Swiggy, and the delivery was super quick! The paneer tikka was hot and fresh, and the packaging was neat. Will order again soon!"</p>
+                    <span class="testimonial-date">4 days ago</span>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-header">
+                        <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Sneha P." class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h3>Sneha P.</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"Tried their family combo after seeing reviews on Zomato. The quantity was perfect for 4, and every dish was delicious. Highly recommend their dal makhani!"</p>
+                    <span class="testimonial-date">5 days ago</span>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-header">
+                        <img src="https://randomuser.me/api/portraits/men/23.jpg" alt="Rohit S." class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h3>Rohit S.</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"Best butter chicken in town! Ordered late at night and the food was still piping hot. The delivery executive was polite and on time."</p>
+                    <span class="testimonial-date">1 month ago</span>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-header">
+                        <img src="https://randomuser.me/api/portraits/women/36.jpg" alt="Anjali D." class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h3>Anjali D.</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"Visited with friends after reading Swiggy reviews. The ambiance is cozy, and the staff is attentive. Loved the mango lassi and tandoori platter!"</p>
+                    <span class="testimonial-date">2 months ago</span>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-header">
+                        <img src="https://randomuser.me/api/portraits/men/11.jpg" alt="Suresh P." class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h3>Suresh P.</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"Amazing ambiance and delicious food! The staff is very courteous. Will visit again with my family."</p>
+                    <span class="testimonial-date">3 days ago</span>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-header">
+                        <img src="https://randomuser.me/api/portraits/women/21.jpg" alt="Divya M." class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h3>Divya M.</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"Loved the desserts and the quick service. The kids had a great time! Highly recommended for families."</p>
+                    <span class="testimonial-date">1 week ago</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Vibhav Restro. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="#">Facebook</a> | 
+            <a href="#">Instagram</a> | 
+            <a href="contact.html">Contact Us</a>
+        </div>
+    </footer>
+    <script src="menuData.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

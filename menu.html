@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - Vibhav Restro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <!-- Header (same as other pages) -->
+    <header>
+        <div class="logo">Vibhav Restro</div>
+        <nav>
+            <ul class="nav-list">
+                <li><a href="homepage.html">Home</a></li>
+                <li><a href="menu.html" class="active">Menu</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="signin.html" class="sign-in-btn">Sign In</a></li>
+                <li class="cart-nav-item">
+                    <a href="#" class="cart-nav-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Banner / Hero Section -->
+    <section class="hero">
+        <h1>Our Delicious Menu</h1>
+        <p>Explore our wide variety of dishes, from starters to desserts and everything in between!</p>
+    </section>
+
+    <!-- Main Content - Replaced with Dynamic Menu Structure -->
+    <main>
+        <section class="menu-section">
+            <!-- Container for the dynamic menu JS -->
+            <div id="full-menu-container" class="menu-container">
+                <h2>Our Full Menu</h2>
+
+                <!-- Search Bar (Optional but suggested) -->
+                <input type="text" class="menu-search" placeholder="Search for dishes...">
+
+                <!-- Specials Toggle (Optional but suggested) -->
+                <div class="specials-toggle-container">
+                    <label class="switch">
+                        <input type="checkbox" id="specials-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <span>Show Specials Only</span>
+                </div>
+
+                <!-- Category Filters - Will be populated by JS -->
+                <div class="category-filters">
+                    <!-- Buttons will be added here by menu.js -->
+                    Loading categories...
+                </div>
+
+                <!-- Menu Items - Will be populated by JS -->
+                <div class="menu-items">
+                    <!-- Item cards will be added here by menu.js -->
+                    Loading menu items...
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer (same as other pages) -->
+    <footer>
+        <p>&copy; 2024 Vibhav Restro. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="#">Facebook</a> |
+            <a href="#">Instagram</a> |
+            <a href="contact.html">Contact Us</a>
+        </div>
+    </footer>
+
+    <!-- Scripts for dynamic menu -->
+    <script src="menuData.js"></script> 
+    <script src="menu.js"></script>
+</body>
+</html> 

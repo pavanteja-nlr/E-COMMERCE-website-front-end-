@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibhav Restro - Welcome Back!</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --glass-bg: rgba(255,255,255,0.25);
+            --glass-border: rgba(255,255,255,0.18);
+            --primary: #1428A0;
+            --accent: #FFD700;
+            --dark-bg: #181C24;
+            --dark-card: rgba(24,28,36,0.7);
+            --light-text: #fff;
+            --dark-text: #222;
+        }
+        body {
+            background: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=2000&q=80') center/cover fixed no-repeat;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            transition: background 0.5s;
+            position: relative;
+            z-index: 1;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(245,247,250,0.92) 100%);
+            z-index: -1;
+        }
+        
+        body.dark-mode::before {
+            background: linear-gradient(135deg, rgba(35,37,38,0.96) 0%, rgba(65,67,69,0.94) 100%);
+        }
+        
+        body.dark-mode {
+            color: var(--light-text);
+        }
+        .glass {
+            background: var(--glass-bg);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(12px);
+        }
+        .hero {
+            position: relative;
+            min-height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 2.5rem 2rem 2rem 2rem;
+            margin: 2rem auto 1rem auto;
+            max-width: 1100px;
+            background: linear-gradient(90deg, rgba(20, 40, 160, 0.85) 0%, rgba(41, 72, 255, 0.85) 100%);
+            color: #fff;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        .hero .avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-right: 2rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+        .hero-content {
+            z-index: 2;
+        }
+        .hero-bg-anim {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            opacity: 0.25;
+            filter: blur(0px);
+        }
+        .dark-mode .hero-bg-anim {
+            opacity: 0.12;
+        }
+        .dark-mode .glass, .dark-mode .action-card, .dark-mode .recent-orders, .dark-mode .recommendation-card, .dark-mode .exclusive-offers, .dark-mode .loyalty-points {
+            background: var(--dark-card) !important;
+            color: var(--light-text) !important;
+        }
+        .profile-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .profile-dropdown .sign-in-btn {
+            background: none;
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .profile-dropdown .sign-in-btn:hover,
+        .profile-dropdown .sign-in-btn:focus {
+            background: #f76b1c;
+            color: #fff;
+        }
+        .profile-dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 110%;
+            min-width: 240px;
+            background: rgba(40,40,40,0.95);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+            z-index: 100;
+            padding: 0.5rem 0;
+        }
+        .profile-dropdown:hover .profile-dropdown-content,
+        .profile-dropdown:focus-within .profile-dropdown-content {
+            display: block;
+        }
+        .profile-dropdown-content a {
+            color: #fff;
+            padding: 12px 24px;
+            text-decoration: none;
+            display: block;
+            font-size: 1rem;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .profile-dropdown-content a:hover {
+            background: #f76b1c;
+            color: #fff;
+        }
+        .dark-mode .profile-dropdown-content a {
+            color: var(--light-text);
+        }
+        .dark-mode .profile-dropdown-content a:hover {
+            background: #232526;
+        }
+        .dark-mode .profile-dropdown-content {
+            background: var(--dark-card);
+        }
+        .dark-mode .cta-btn {
+            background: #FFD700;
+            color: #232526;
+        }
+        .cta-btn {
+            background: var(--accent);
+            color: #232526;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: background 0.2s, color 0.2s, transform 0.2s;
+        }
+        .cta-btn:hover {
+            background: #fff;
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+        .dark-mode .cta-btn:hover {
+            background: #fff;
+            color: #232526;
+        }
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .action-card {
+            background: var(--glass-bg);
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+            padding: 2rem 1rem 1.5rem 1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-card:hover {
+            transform: translateY(-7px) scale(1.04);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.18);
+        }
+        .action-icon {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            transition: color 0.3s;
+        }
+        .action-card:hover .action-icon {
+            color: var(--accent);
+        }
+        .loyalty-points {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA000 100%);
+            color: #232526;
+            padding: 2rem 1rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+            text-align: center;
+            position: relative;
+        }
+        .points-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 1rem 0 0.5rem 0;
+            letter-spacing: 2px;
+            transition: color 0.3s;
+        }
+        .points-progress {
+            width: 80%;
+            margin: 0.5rem auto 0 auto;
+            height: 12px;
+            background: #fff3;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .points-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #FFD700 60%, #FFA000 100%);
+            width: 0;
+            border-radius: 8px;
+            transition: width 1.2s cubic-bezier(.77,0,.18,1);
+        }
+        .recent-orders {
+            margin: 2rem 0;
+        }
+        .orders-carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 1.5rem;
+            padding-bottom: 1rem;
+            scroll-snap-type: x mandatory;
+        }
+        .order-card {
+            min-width: 260px;
+            background: var(--glass-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+            padding: 1.2rem;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .order-card img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+        .order-card .order-status {
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+            border-radius: 12px;
+            padding: 0.3rem 1rem;
+        }
+        .order-status.completed {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+        .order-status.pending {
+            background: #FFF3E0;
+            color: #EF6C00;
+        }
+        .recommendations-section {
+            margin: 2rem 0;
+        }
+        .recommendations-carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 1.5rem;
+            padding-bottom: 1rem;
+            scroll-snap-type: x mandatory;
+        }
+        .recommendation-card {
+            min-width: 260px;
+            background: var(--glass-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+            overflow: hidden;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+        }
+        .recommendation-image {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+        }
+        .recommendation-content {
+            padding: 1rem;
+        }
+        .exclusive-offers {
+            margin: 2rem 0;
+            position: relative;
+        }
+        .offers-banner {
+            background: linear-gradient(90deg, #FF4081 60%, #FFA000 100%);
+            color: #fff;
+            border-radius: 18px;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+        }
+        .offers-banner .countdown {
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: #fff2;
+            padding: 0.5rem 1.2rem;
+            border-radius: 12px;
+        }
+        .dark-mode .offers-banner {
+            background: linear-gradient(90deg, #FF4081 60%, #FFA000 100%);
+            color: #fff;
+        }
+        .dark-mode .glass, .dark-mode .order-card, .dark-mode .recommendation-card {
+            background: var(--dark-card);
+        }
+        .dark-mode .order-status.completed {
+            background: #2E7D32;
+            color: #fff;
+        }
+        .dark-mode .order-status.pending {
+            background: #EF6C00;
+            color: #fff;
+        }
+        .dark-mode .points-progress {
+            background: #fff3;
+        }
+        .dark-mode .points-bar {
+            background: linear-gradient(90deg, #FFD700 60%, #FFA000 100%);
+        }
+        .dark-mode .profile-dropdown-content {
+            background: var(--dark-card);
+        }
+        .dark-mode .profile-dropdown-content a:hover {
+            background: #232526;
+        }
+        .dark-mode .cta-btn {
+            background: #FFD700;
+            color: #232526;
+        }
+        .dark-mode .cta-btn:hover {
+            background: #fff;
+            color: #232526;
+        }
+        /* Animated background elements */
+        .animated-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .animated-shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.13;
+            filter: blur(12px);
+            animation: float 12s infinite alternate ease-in-out;
+        }
+        .animated-shape.shape1 {
+            width: 320px; height: 320px; background: #1428A0; left: 5vw; top: 10vh; animation-delay: 0s;
+        }
+        .animated-shape.shape2 {
+            width: 220px; height: 220px; background: #FFD700; right: 8vw; top: 30vh; animation-delay: 2s;
+        }
+        .animated-shape.shape3 {
+            width: 180px; height: 180px; background: #FF4081; left: 30vw; bottom: 10vh; animation-delay: 4s;
+        }
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-30px) scale(1.08); }
+        }
+        .dark-toggle {
+            position: fixed;
+            top: 24px;
+            right: 32px;
+            z-index: 100;
+            background: var(--glass-bg);
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .dark-mode .dark-toggle {
+            background: #232526;
+            color: #FFD700;
+        }
+        /* Apple-inspired Widget Area Styles */
+        .widget-area {
+            margin: 2rem auto;
+            max-width: 900px;
+        }
+        
+        .widgets-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .widget {
+            padding: 1.5rem;
+            border-radius: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .widget:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 32px rgba(31, 38, 135, 0.15);
+        }
+        
+        .widget h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .badge {
+            background: var(--accent);
+            color: var(--dark-text);
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+        }
+        
+        .dish-recommendation {
+            display: flex;
+            align-items: center;
+        }
+        
+        .dish-image {
+            width: 100px;
+            height: 100px;
+            overflow: hidden;
+            border-radius: 15px;
+            margin-right: 1rem;
+        }
+        
+        .dish-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .dish-info h4 {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 0.3rem;
+        }
+        
+        .dish-info p {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .dish-price {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .add-to-order-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .add-to-order-btn:hover {
+            background: var(--accent);
+            color: var(--dark-text);
+        }
+        
+        .reservation-details {
+            display: flex;
+            align-items: center;
+        }
+        
+        .reservation-date {
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-right: 1rem;
+            min-width: 60px;
+        }
+        
+        .reservation-date .day {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .reservation-date .month {
+            display: block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        
+        .reservation-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+        }
+        
+        .modify-btn, .add-calendar-btn {
+            background: none;
+            border: 1px solid #ddd;
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .modify-btn:hover, .add-calendar-btn:hover {
+            background: #f5f5f5;
+            border-color: #ccc;
+        }
+        
+        /* Activity Highlights Styles */
+        .activity-highlights {
+            margin: 3rem auto;
+            max-width: 900px;
+        }
+        
+        .activity-highlights h3 {
+            margin-bottom: 1.5rem;
+        }
+        
+        .activity-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 1.5rem;
+            padding-bottom: 1rem;
+            scroll-snap-type: x mandatory;
+        }
+        
+        .activity-card {
+            min-width: 280px;
+            padding: 1.5rem;
+            border-radius: 20px;
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+        }
+        
+        .activity-icon {
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+        }
+        
+        .activity-title {
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+        
+        .activity-time {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 0.5rem;
+        }
+        
+        /* Make content animate as user scrolls - Apple style */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .widget, .activity-card {
+            opacity: 0;
+            animation: fadeInUp 0.8s forwards;
+        }
+        
+        .widget:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+        
+        .widget:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+        
+        .activity-card:nth-child(1) {
+            animation-delay: 0.3s;
+        }
+        
+        .activity-card:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+        
+        .activity-card:nth-child(3) {
+            animation-delay: 0.7s;
+        }
+        
+        /* Membership Card Styles - Apple Wallet Inspired */
+        .membership-card-section {
+            margin: 3rem auto;
+            max-width: 900px;
+        }
+        
+        .membership-card-section h3 {
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .digital-card {
+            width: 100%;
+            max-width: 400px;
+            height: 240px;
+            perspective: 1000px;
+        }
+        
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        
+        .digital-card:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-front {
+            background: linear-gradient(135deg, #1428A0 0%, #091444 100%);
+            color: white;
+        }
+        
+        .card-back {
+            background: linear-gradient(135deg, #091444 0%, #1428A0 100%);
+            color: white;
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .restaurant-logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: rgba(255,255,255,0.2);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+        
+        .member-type {
+            font-size: 0.9rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            background: var(--accent);
+            color: #091444;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+        }
+        
+        .card-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .member-name {
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .member-since, .member-id {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 0.3rem;
+        }
+        
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 1rem;
+        }
+        
+        .membership-points, .next-tier {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .points-label, .tier-label {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-bottom: 0.2rem;
+        }
+        
+        .points-value, .tier-value {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        
+        .qr-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .qr-code {
+            background: white;
+            padding: 0.8rem;
+            border-radius: 12px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .qr-code img {
+            width: 120px;
+            height: 120px;
+        }
+        
+        .qr-instruction {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            text-align: center;
+        }
+        
+        .card-barcode {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .barcode-lines {
+            width: 80%;
+            height: 40px;
+            background-image: linear-gradient(90deg, transparent 0%, transparent 5%, 
+                                            white 5%, white 7%, 
+                                            transparent 7%, transparent 12%,
+                                            white 12%, white 14%, 
+                                            transparent 14%, transparent 20%, 
+                                            white 20%, white 22%,
+                                            transparent 22%, transparent 25%, 
+                                            white 25%, white 33%, 
+                                            transparent 33%, transparent 35%, 
+                                            white 35%, white 40%, 
+                                            transparent 40%, transparent 42%, 
+                                            white 42%, white 47%, 
+                                            transparent 47%, transparent 50%, 
+                                            white 50%, white 60%, 
+                                            transparent 60%, transparent 64%, 
+                                            white 64%, white 68%, 
+                                            transparent 68%, transparent 72%, 
+                                            white 72%, white 74%, 
+                                            transparent 74%, transparent 77%, 
+                                            white 77%, white 81%, 
+                                            transparent 81%, transparent 85%, 
+                                            white 85%, white 90%, 
+                                            transparent 90%, transparent 92%, 
+                                            white 92%, white 97%, 
+                                            transparent 97%, transparent 100%);
+            background-size: 100% 100%;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .barcode-number {
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .card-btn {
+            background: var(--glass-bg);
+            color: var(--dark-text);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .card-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .dark-mode .card-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .dark-mode .card-btn:hover {
+            background: var(--accent);
+            color: var(--dark-text);
+        }
+        
+        /* Card 3D effect */
+        @keyframes floatCard {
+            0% { transform: translateZ(0) rotateX(0) rotateY(0); }
+            100% { transform: translateZ(20px) rotateX(5deg) rotateY(5deg); }
+        }
+        
+        .digital-card {
+            animation: floatCard 3s infinite alternate ease-in-out;
+        }
+
+        /* Styles for Menu Highlights Section (can refine in menu.css or here) */
+        .menu-highlights-section {
+            margin: 3rem auto;
+            max-width: 1100px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.6); /* Slightly different background */
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .dark-mode .menu-highlights-section {
+             background: var(--dark-card) !important;
+        }
+
+        .menu-highlights-section h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        
+        .dark-mode .menu-highlights-section h2 {
+             color: var(--accent);
+        }
+
+        /* Reuse .menu-items grid from menu.css */
+        .menu-highlights-section .menu-items {
+             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* Adjust columns if needed */
+             margin-bottom: 2rem;
+        }
+        
+        .view-full-menu-btn {
+            display: block;
+            width: fit-content;
+            margin: 1rem auto 0 auto;
+            padding: 0.8rem 2rem;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            text-align: center;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        .dark-mode .view-full-menu-btn {
+            background-color: var(--accent);
+            color: var(--dark-bg);
+        }
+
+        .view-full-menu-btn:hover {
+            background-color: #f76b1c; /* Match other hover states */
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg">
+        <div class="animated-shape shape1"></div>
+        <div class="animated-shape shape2"></div>
+        <div class="animated-shape shape3"></div>
+    </div>
+    <button class="dark-toggle" title="Toggle dark mode"><i class="fas fa-moon"></i></button>
+    <header>
+        <div class="logo">Vibhav Restro</div>
+        <nav>
+            <ul class="nav-list">
+                <li><a href="homepage2.html" class="active">Home</a></li>
+                <li><a href="menu2.html">Menu</a></li>
+                <li><a href="about2.html">About</a></li>
+                <li><a href="contact2.html">Contact</a></li>
+                <li class="profile-dropdown">
+                    <a href="#" class="sign-in-btn signed-in"><i class="fas fa-user-circle"></i> John ▼</a>
+                    <div class="profile-dropdown-content glass">
+                        <a href="profile.html">Profile</a>
+                        <a href="profile.html">Order History</a>
+                        <a href="profile.html">Settings</a>
+                        <a href="profile.html">Sign Out</a>
+                    </div>
+                </li>
+                <li class="cart-nav-item">
+                    <a href="#" class="cart-nav-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <section class="hero glass" style="background: linear-gradient(90deg, rgba(245,211,101,0.85) 0%, rgba(247,107,28,0.85) 100%), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat; color: #222; text-align: center;">
+        <div class="avatar"><i class="fas fa-user"></i></div>
+        <div class="hero-content">
+            <h1>Welcome back, John!</h1>
+            <p>superise your taste buds !!</p>
+        </div>
+        <div class="hero-bg-anim"></div>
+    </section>
+    <main>
+        <section class="glass" style="margin:2rem auto; max-width:900px; padding:2rem;">
+            <h2>Welcome to Vibhav Restro</h2>
+            <p>Enjoy exclusive member benefits, personalized recommendations, and a seamless dining experience. Use the navigation above to explore our menu, learn more about us, or get in touch!</p>
+        </section>
+        
+        <!-- Apple-inspired Dynamic Widget Area -->
+        <section class="widget-area">
+            <div class="widgets-container">
+                <div class="widget for-you glass">
+                    <h3>For You <span class="badge">New</span></h3>
+                    <div class="widget-content">
+                        <div class="dish-recommendation">
+                            <div class="dish-image">
+                                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80" alt="Recommended dish">
+                            </div>
+                            <div class="dish-info">
+                                <h4>Based on your taste</h4>
+                                <p>Mediterranean Salad</p>
+                                <span class="dish-price">₹999</span>
+                                <button class="add-to-order-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="widget upcoming-reservation glass">
+                    <h3>Your Reservation</h3>
+                    <div class="widget-content">
+                        <div class="reservation-details">
+                            <div class="reservation-date">
+                                <span class="day">24</span>
+                                <span class="month">JUN</span>
+                            </div>
+                            <div class="reservation-info">
+                                <p><strong>Friday at 7:30 PM</strong></p>
+                                <p>Table for 4</p>
+                                <div class="reservation-actions">
+                                    <button class="modify-btn">Modify</button>
+                                    <button class="add-calendar-btn"><i class="far fa-calendar-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Apple-inspired Activity Highlights -->
+        <section class="activity-highlights">
+            <h3>Recent Activity</h3>
+            <div class="activity-container">
+                <div class="activity-card glass">
+                    <div class="activity-icon"><i class="fas fa-utensils"></i></div>
+                    <div class="activity-details">
+                        <p class="activity-title">Last Order</p>
+                        <p class="activity-description">Margherita Pizza & Tiramisu</p>
+                        <p class="activity-time">2 days ago</p>
+                    </div>
+                </div>
+                
+                <div class="activity-card glass">
+                    <div class="activity-icon"><i class="fas fa-star"></i></div>
+                    <div class="activity-details">
+                        <p class="activity-title">Review</p>
+                        <p class="activity-description">Your review helped 12 customers</p>
+                        <p class="activity-time">Last week</p>
+                    </div>
+                </div>
+                
+                <div class="activity-card glass">
+                    <div class="activity-icon"><i class="fas fa-gift"></i></div>
+                    <div class="activity-details">
+                        <p class="activity-title">Birthday Reward</p>
+                        <p class="activity-description">50% off on your next visit</p>
+                        <p class="activity-time">Valid for 30 days</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Apple Wallet-inspired Digital Membership Card -->
+        <section class="membership-card-section">
+            <h3>Your Membership</h3>
+            <div class="card-container">
+                <div class="digital-card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-header">
+                                <div class="restaurant-logo">VR</div>
+                                <div class="member-type">GOLD MEMBER</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="member-name">John Doe</div>
+                                <div class="member-since">Member since 2022</div>
+                                <div class="member-id">ID: VR-2022-8547</div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="membership-points">
+                                    <span class="points-label">POINTS</span>
+                                    <span class="points-value">1,250</span>
+                                </div>
+                                <div class="next-tier">
+                                    <span class="tier-label">NEXT TIER</span>
+                                    <span class="tier-value">PLATINUM</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="qr-container">
+                                <div class="qr-code">
+                                    <!-- Placeholder for QR code image -->
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=VR-2022-8547" alt="QR Code">
+                                </div>
+                                <p class="qr-instruction">Scan at restaurant for check-in</p>
+                            </div>
+                            <div class="card-barcode">
+                                <div class="barcode-lines"></div>
+                                <div class="barcode-number">VR22854788</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <button class="card-btn add-to-wallet">
+                        <i class="fas fa-wallet"></i> Add to Wallet
+                    </button>
+                    <button class="card-btn share-card">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- == NEW MENU HIGHLIGHTS SECTION == -->
+        <section class="menu-highlights-section" id="menu-highlights">
+             <h2>Menu Highlights</h2>
+             <div class="menu-items" id="highlights-grid">
+                 <!-- Highlight items will be loaded here by JS -->
+                 <p>Loading highlights...</p>
+             </div>
+             <a href="menu2.html" class="view-full-menu-btn">View Full Menu</a>
+        </section>
+        <!-- == END NEW MENU HIGHLIGHTS SECTION == -->
+    </main>
+    <footer>
+        <p>&copy; 2024 Vibhav Restro. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="#">Facebook</a> | 
+            <a href="#">Instagram</a> | 
+            <a href="contact2.html">Contact Us</a>
+        </div>
+    </footer>
+    <script>
+    document.querySelector('.dark-toggle').onclick = function() {
+        document.body.classList.toggle('dark-mode');
+        this.querySelector('i').classList.toggle('fa-moon');
+        this.querySelector('i').classList.toggle('fa-sun');
+    };
+    
+    // Animate elements when they come into view
+    document.addEventListener('DOMContentLoaded', function() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, {threshold: 0.1});
+        
+        document.querySelectorAll('.widget, .activity-card').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Simulate loyalty points animation
+        setTimeout(() => {
+            const pointsBar = document.querySelector('.points-bar');
+            if (pointsBar) {
+                pointsBar.style.width = '65%';
+            }
+        }, 500);
+        
+        // Add wallet button functionality
+        document.querySelector('.add-to-wallet')?.addEventListener('click', function() {
+            alert('Digital card has been added to your wallet!');
+        });
+        
+        // Share button functionality
+        document.querySelector('.share-card')?.addEventListener('click', function() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Vibhav Restro Membership Card',
+                    text: 'Check out my Gold Membership at Vibhav Restro!',
+                    url: window.location.href,
+                })
+                .catch(error => console.log('Error sharing', error));
+            } else {
+                alert('Copy this link to share your membership: ' + window.location.href);
+            }
+        });
+    });
+    </script>
+</body>
+</html> 
